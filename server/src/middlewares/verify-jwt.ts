@@ -5,7 +5,8 @@ export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
     await request.jwtVerify()
   } catch (error) {
     return reply.status(401).send({
-      error: 'token.invaid',
+      error: 'Sessão encerrada',
+      status: 'token.expired'
     })
   }
 }

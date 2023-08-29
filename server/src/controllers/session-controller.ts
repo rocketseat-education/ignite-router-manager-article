@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { FastifyInstance } from "fastify";
 import bcrypt from 'bcryptjs'
-import { verifyJWT } from "../middlewares/verify-jwt";
 
 const prismaClient = new PrismaClient()
 
@@ -74,20 +73,45 @@ export async function sessionController(app: FastifyInstance) {
     }
   })
 
-  app.get('/me', { onRequest: verifyJWT }, async (request) =>{
-    const userId= request.user.sub
+  app.patch('/refresh-token', async (request, reply) => {
+    try {
+      await request.jwtVerify({ onlyCookie: true })
 
-    const user = await prismaClient.user.findFirst({
-      where: {
-        id: userId
-      }
-    })
+      const token = await reply.jwtSign(
+        {},
+        {
+          sign: {
+            sub: request.user.sub,
+          },
+        },
+      )
 
-    return {
-      me: {
-        ...user,
-        password: undefined
-      }
+      const refreshToken = await reply.jwtSign(
+        {},
+        {
+          sign: {
+            sub: request.user.sub,
+            expiresIn: '2d',
+          },
+        },
+      )
+
+      return reply
+        .setCookie('refreshToken', refreshToken, {
+          path: '/',
+          secure: true,
+          sameSite: true,
+          httpOnly: true,
+        })
+        .status(200)
+        .send({
+          token,
+        })
+    } catch (error) {
+      return reply.status(401).send({
+        error: 'Erro ao revalidar o token',
+        status: 'token.invalid'
+      })
     }
   })
 }

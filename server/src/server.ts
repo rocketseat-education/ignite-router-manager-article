@@ -1,6 +1,8 @@
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
+import { sessionController } from "./controllers/session-controller";
+import { profileController } from "./controllers/profile-controller";
 
 const app = fastify()
 
@@ -16,6 +18,9 @@ app.register(fastifyJwt, {
 })
 
 app.register(fastifyCookie)
+
+app.register(sessionController)
+app.register(profileController)
 
 app
   .listen({
