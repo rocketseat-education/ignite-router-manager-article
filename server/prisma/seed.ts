@@ -26,7 +26,9 @@ async function run() {
       id: userId,
       name: 'Usuário Teste',
       email: 'root@email.com',
-      password: passwordHash
+      role: 'Dev Instructor as Rocketseat',
+      bio: 'Cevadis im ampola pa arma uma pindureta. Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo, vitae iaculis nisl. Quem manda na minha terra sou euzis!',
+      password: passwordHash,
     }
   })
 }
