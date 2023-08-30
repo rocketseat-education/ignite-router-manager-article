@@ -13,6 +13,7 @@ type User = {
 type AuthContextData = {
   user: User | null
   signIn: (email: string, password: string) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -59,6 +60,10 @@ export function AuthProvider({ childern }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    await SecureStore.deleteItemAsync(AUTH_KEY)
+    setUser(null)
+  }
 
   useEffect(() => {
     async function loadUser() {
@@ -74,7 +79,7 @@ export function AuthProvider({ childern }: AuthProviderProps) {
   },[])
 
   return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
       {childern}
     </AuthContext.Provider>
   )
