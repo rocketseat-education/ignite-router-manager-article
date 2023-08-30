@@ -5,6 +5,8 @@ import {
   Nunito_700Bold, 
   Nunito_800ExtraBold 
 } from '@expo-google-fonts/nunito'
+import { AuthProvider } from "../contexts/auth-provider";
+
 
 export default function RootLayout() {
 
@@ -17,10 +19,13 @@ export default function RootLayout() {
   if(!fontsLoaded) return null
 
   return(
-    <Stack 
-      screenOptions={{
-        headerShown: false
-      }}
-    />
+    <AuthProvider>
+      <Stack 
+        screenOptions={{
+          headerShown: false
+        }}
+      />
+    </AuthProvider>
+    
   )
 }

@@ -19,12 +19,12 @@ type AuthContextData = {
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 type AuthProviderProps = {
-  childern: ReactNode
+  children: ReactNode
 }
 
 const AUTH_KEY = '@router-manager:token'
 
-export function AuthProvider({ childern }: AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
 
   const [user, setUser] = useState<User | null>(null)
 
@@ -80,7 +80,7 @@ export function AuthProvider({ childern }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider value={{ user, signIn, signOut }}>
-      {childern}
+      {children}
     </AuthContext.Provider>
   )
 }
