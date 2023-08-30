@@ -1,24 +1,34 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "../../styles/theme";
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+
 
 export default function Home() {
+  const { user, signOut } = useAuth()
+  
+  async function handleSignOut() {
+    Alert.alert('Sair', 'Deseja realmente sair da aplicação', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Sair', onPress: signOut }
+    ])
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.userInfo}>
           <Image 
-            source={{ uri: 'https://ui-avatars.com/api/?name=John+Doe' }} 
+            source={{ uri: user?.avatar_url }} 
             style={styles.avatar}
           />
 
-          <Text style={styles.username}>Usuário Teste</Text>
-          <Text style={styles.role}>Profissão</Text>
-          <Text style={styles.bio}>Biografia</Text>
+          <Text style={styles.username}>{user?.name}</Text>
+          <Text style={styles.role}>{user?.role}</Text>
+          <Text style={styles.bio}>{user?.bio}</Text>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSignOut}>
           <MaterialCommunityIcons 
             name="logout" 
             size={28}

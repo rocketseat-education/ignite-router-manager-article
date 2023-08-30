@@ -67,6 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     await SecureStore.deleteItemAsync(AUTH_KEY)
+    setUserToken('')
     setUser(null)
   }
 
