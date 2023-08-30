@@ -59,6 +59,20 @@ export function AuthProvider({ childern }: AuthProviderProps) {
     }
   }
 
+
+  useEffect(() => {
+    async function loadUser() {
+      const storageToken = await SecureStore.getItemAsync(AUTH_KEY)
+
+      if(storageToken) {
+        updateToken(storageToken)
+        await getUser()
+      }
+    }
+
+    loadUser()
+  },[])
+
   return (
     <AuthContext.Provider value={{ user, signIn }}>
       {childern}
