@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from 'react'
 import { api } from '../libs/api';
 import * as SecureStore from 'expo-secure-store';
+import { useProtectedRouter } from '../hooks/useProtecedRouter';
 
 type User = {
   id: string;
@@ -22,13 +23,17 @@ type AuthProviderProps = {
   children: ReactNode
 }
 
-const AUTH_KEY = '@router-manager:token'
+const AUTH_KEY = 'router-manager-token'
 
 export function AuthProvider({ children }: AuthProviderProps) {
 
   const [user, setUser] = useState<User | null>(null)
+  const [userToken, setUserToken] = useState('')
+
+  useProtectedRouter(userToken)
 
   function updateToken(token: string) {
+    setUserToken(token)
     api.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 

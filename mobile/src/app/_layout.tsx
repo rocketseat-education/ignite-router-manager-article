@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import { 
   useFonts, 
   Nunito_400Regular, 
@@ -20,11 +20,7 @@ export default function RootLayout() {
 
   return(
     <AuthProvider>
-      <Stack 
-        screenOptions={{
-          headerShown: false
-        }}
-      />
+      <Slot />
     </AuthProvider>
     
   )
